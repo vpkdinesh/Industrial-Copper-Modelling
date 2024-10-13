@@ -23,13 +23,13 @@ country_values.sort()
 
 status_values=list(set(df['status']))
 # print(status_values)
+
 status_encoded = {'Lost':0, 'Won':1, 'Draft':2, 'To be approved':3, 'Not lost for AM':4,'Wonderful':5, 'Revised':6,
                     'Offered':7, 'Offerable':8}
-
 item_type_values=list(set(df['item_type']))
 # print(item_type_values)
-item_type_encoded = {'W':5.0, 'WI':6.0, 'S':3.0, 'Others':1.0, 'PL':2.0, 'IPL':0.0, 'SLAWR':4.0}
 
+item_type_encoded = {'W':5.0, 'WI':6.0, 'S':3.0, 'Others':1.0, 'PL':2.0, 'IPL':0.0, 'SLAWR':4.0}
 product_ref_values=list(set(df['product_ref']))
 product_ref_values.sort()
 # print(product_ref_values)
@@ -120,31 +120,21 @@ if selected == 'Price Prediction':
         with col1:
 
             Item_Date=st.date_input(label='**Item Date**',format='DD/MM/YYYY')
-
             Country=st.selectbox(label='**Country**',options=country_values,index=None)
-
             Item_Type=st.selectbox(label='**Item Type**',options=item_type_values,index=None)
-
             Application=st.selectbox(label='**Application**',options=application_values,index=None)
-
             Product_Ref=st.selectbox(label='**Product Ref**',options=product_ref_values,index=None)
-
             Customer_Id=st.number_input('**Customer ID**',min_value=10000)
 
         with col2:
 
             Delivery_Date=st.date_input(label='**Delivery Date**',format='DD/MM/YYYY')
-
             Status=st.selectbox(label='**Status**',options=status_values,index=None)
-
             Quantity=st.number_input(label='**Quantity**',min_value=0.1)
-
             Width=st.number_input(label='**Width**',min_value=1.0)
-
             Thickness=st.number_input(label='**Thickness**',min_value=0.1)
 
             st.markdown('<br>', unsafe_allow_html=True)
-            
             button=st.form_submit_button(':red[**Predict Selling Price**]',use_container_width=True)
 
     if button:
@@ -162,18 +152,13 @@ if selected == 'Price Prediction':
             # customize the user data to fit the feature 
             Status=status_encoded[Status]
             Item_Type=item_type_encoded[Item_Type]
-
             Delivery_Time_Taken=abs((Item_Date - Delivery_Date).days)
-
             Quantity_Log=np.log(Quantity)
             Thickness_Log=np.log(Thickness)
-
             #predict the selling price with regressor model
             user_data=np.array([[Customer_Id, Country, Status, Item_Type ,Application, Width, Product_Ref,
                                 Delivery_Time_Taken, Quantity_Log, Thickness_Log]])
-            
             pred=predict_model.predict(user_data)
-
             selling_price_pred=np.exp(pred[0])
 
             #display the predicted selling price 
@@ -228,11 +213,9 @@ if selected == 'Status Prediction':
             Quantity_Log=np.log(Quantity)
             Thickness_Log=np.log(Thickness)
             Selling_Price_Log=np.log(Selling_Price)
-
             #predict the status with classifier model
             user_data=np.array([[Customer_Id, Country,Item_Type ,Application, Width, Product_Ref,
                                 Delivery_Time_Taken, Quantity_Log, Thickness_Log,Selling_Price_Log]])
-          
             status=model.predict(user_data)
 
             #display the predicted status 
